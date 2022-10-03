@@ -4,6 +4,7 @@ import math
 from collections import defaultdict
 
 import numpy
+import sympy
 from numpy.typing import NDArray
 
 
@@ -18,7 +19,9 @@ class Polynomial:
     @staticmethod
     def from_string(s: str) -> Polynomial:
         coeff: defaultdict[int, int] = defaultdict(lambda: 0)
-        for x in s.strip().replace(" + ", " +").replace(" - ", " -").split(" "):
+        for x in (
+            s.strip().replace(" ", "").replace("+", " +").replace("-", " -").split(" ")
+        ):
             if x != "":
                 if "x" in x:
                     x1, x2 = x.split("x")
@@ -89,9 +92,22 @@ class RationalPolynomial:
     denom: Polynomial
 
     def __init__(self, num: Polynomial, denom: Polynomial) -> None:
-        gcd = math.gcd(*num.coefficients, *denom.coefficients)
-        num = Polynomial(num.coefficients // gcd)
-        denom = Polynomial(denom.coefficients // gcd)
+        x = sympy.symbols("x")
+        p = sympy.poly(
+            numpy.sum(x ** numpy.arange(*num.coefficients.shape) * num.coefficients), x
+        )
+        q = sympy.poly(
+            numpy.sum(
+                x ** numpy.arange(*denom.coefficients.shape) * denom.coefficients
+            ),
+            x,
+        )
+        gcd = sympy.gcd(p, q)
+        p, _ = sympy.div(p, gcd)
+        q, _ = sympy.div(q, gcd)
+
+        num = Polynomial(numpy.array(p.all_coeffs()[::-1], dtype=numpy.int64))
+        denom = Polynomial(numpy.array(q.all_coeffs()[::-1], dtype=numpy.int64))
 
         self.num = num
         self.denom = denom
@@ -108,10 +124,15 @@ class RationalPolynomial:
         return f"({self.num.__repr__()}) / ({self.denom.__repr__()})"
 
     def __eq__(self, __o: object) -> bool:
-        return (
-            isinstance(__o, RationalPolynomial)
-            and self.num == __o.num
-            and self.denom == __o.denom
+        return isinstance(__o, RationalPolynomial) and (
+            (
+                numpy.array_equal(self.num.coefficients, __o.num.coefficients)
+                and numpy.array_equal(self.denom.coefficients, __o.denom.coefficients)
+            )
+            or (
+                numpy.array_equal(self.num.coefficients, -__o.num.coefficients)
+                and numpy.array_equal(self.denom.coefficients, -__o.denom.coefficients)
+            )
         )
 
     def __add__(self, r: RationalPolynomial) -> RationalPolynomial:
