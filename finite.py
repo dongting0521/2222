@@ -59,7 +59,7 @@ class DifferenceNonUniformGrid:
         self.derivative_order = derivative_order
         self.convergence_order = convergence_order
         self.stencil_type = stencil_type
-        num_points = derivative_order + convergence_order + 1
+        num_points = derivative_order + convergence_order 
         matrix = sparse.dok_matrix((grid.N, grid.N))
         for i in range(*grid.values.shape):  
             xi = grid.values[i]
