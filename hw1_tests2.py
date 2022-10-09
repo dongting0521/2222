@@ -69,3 +69,4 @@ def test_rational_polynomial_division2():
     b = Polynomial.from_string("-5 + 2 * x - 12 * x^2 - 2 * x^4")
     c = RationalPolynomial.from_string("(- 2 + x + x^2)/(-5 + 2 * x - 12 * x^2 - 2 * x^4)")
     assert a / b == c
+
