@@ -4,7 +4,6 @@ import finite
 import timesteppers
 import equations
 
-
 resolution_list = [100, 200, 400]
 
 error_BDF2 = {(100,2):0.15, (200,2):0.04, (400,2):0.008, (100,4):0.07, (200,4):0.007, (400,4):0.0012}
