@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
-from array import apply_matrix, axslice
+from farray import apply_matrix, axslice
 from collections import deque
 from functools import cache
 from typing import Any, Callable, Optional, cast
