@@ -1,5 +1,3 @@
-import sys
-print(sys.path)
 import pytest
 import numpy as np
 import finite
