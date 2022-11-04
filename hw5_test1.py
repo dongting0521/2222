@@ -3,6 +3,8 @@ import numpy as np
 import finite
 import timesteppers
 import equations
+import sys
+print(sys.path)
 
 resolution_list = [100, 200, 400]
 
