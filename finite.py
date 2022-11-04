@@ -1,4 +1,4 @@
-from array import apply_matrix, reshape_vector
+from farray import apply_matrix, reshape_vector
 from typing import Literal, Sequence, Union, cast
 
 import numpy as np
