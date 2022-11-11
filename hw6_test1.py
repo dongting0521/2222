@@ -29,7 +29,7 @@ def test_reaction_diffusion(resolution, alpha):
     while rd_problem.t < 1-1e-5:
         rd_problem.step(dt)
 
-    solution = np.loadtxt('solutions/c_%i.dat' %resolution)
+    solution = np.loadtxt('solutions/c_%i_1.dat' %resolution)
     error = np.max(np.abs(solution - c))
 
     error_est = error_RD[(resolution,alpha)]
